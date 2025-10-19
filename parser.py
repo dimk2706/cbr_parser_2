@@ -146,6 +146,7 @@ class CurrencyRatesParser:
             return False
         
         try:
+            import requests
             response = requests.post(
                 url=env("CURRENCY_RATES_ENDPOINT"),
                 headers={"API-Token": env("API_TOKEN")},
