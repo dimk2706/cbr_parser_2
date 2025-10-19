@@ -1,4 +1,4 @@
-import datetime
+from datetime import datetime
 import logging
 import time
 from typing import List, Dict, Any, Optional
@@ -32,7 +32,7 @@ class CurrencyRatesParser:
     
     def __init__(self) -> None:
         self.records: List[Dict[str, Any]] = []
-        self.current_date: str = datetime.datetime.now().strftime("%d.%m.%Y")
+        self.current_date: str = datetime.now().strftime("%d.%m.%Y")
     
     def parse(self, date: Optional[str] = None) -> 'CurrencyRatesParser':
         """
@@ -82,7 +82,7 @@ class CurrencyRatesParser:
                     'currency_name': cols[3].text.strip(),
                     'exchange_rate': float(cols[4].text.strip().replace(',', '.')),
                     'date': self.current_date,
-                    'timestamp': dt.now().isoformat(),
+                    'timestamp': datetime.now().isoformat(),
                     'source': 'cbr.ru'
                 }
                 
@@ -126,7 +126,7 @@ class CurrencyRatesParser:
                                 max_length = len(str(cell.value))
                         except:
                             pass
-                    adjusted_width = min(max_length + 2, 50)
+                    adjusted_width = min(max_length + 2, 50)  # Ограничиваем максимальную ширину
                     worksheet.column_dimensions[column_letter].width = adjusted_width
             
             logger.info(f"Данные сохранены в файл: {filename}")
@@ -149,7 +149,6 @@ class CurrencyRatesParser:
             return False
         
         try:
-            import requests
             response = requests.post(
                 url=env("CURRENCY_RATES_ENDPOINT"),
                 headers={"API-Token": env("API_TOKEN")},
@@ -207,8 +206,10 @@ def save_currency_rates_to_excel(date=None, filename=None, save_to_db=False):
     if filename is None:
         filename = f"currency_rates_{parser.current_date.replace('.', '_')}.xlsx"
     
+    # Сохраняем в Excel
     parser.save_to_excel(filename)
     
+    # Отправляем в базу данных если требуется
     if save_to_db:
         parser.send_to_database()
     
