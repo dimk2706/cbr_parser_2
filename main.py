@@ -32,7 +32,7 @@ def job() -> None:
 
 if __name__ == "__main__":
     # Запускаем каждый день в 09:00 по Москве (после обновления данных ЦБ)
-    schedule.every().day.at("09:00", "Europe/Moscow").do(job)
+    schedule.every().day.at("19:00", "Europe/Moscow").do(job)
     
     # Для тестирования - запустить сразу
     job()

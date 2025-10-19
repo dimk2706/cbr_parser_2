@@ -1,4 +1,4 @@
-from datetime import datetime as dt
+import datetime
 import logging
 import time
 from typing import List, Dict, Any, Optional
@@ -7,15 +7,18 @@ import logfire
 import pandas as pd
 import requests
 from bs4 import BeautifulSoup
-from environs import env
+from environs import Env
 
 from settings import *
 
+# Загружаем env
+env = Env()
+env.read_env()
 
 # Настройка логирования
-env.read_env()
-if env("LOGFIRE_TOKEN", None):
-    logfire.configure(token=env("LOGFIRE_TOKEN"), service_name="currency_parser")
+logfire_token = env("LOGFIRE_TOKEN", None)
+if logfire_token:
+    logfire.configure(token=logfire_token, service_name="currency_parser")
     logging.basicConfig(handlers=[logfire.LogfireLoggingHandler()])
     
 logger = logging.getLogger("currency_parser_logger")
@@ -29,7 +32,7 @@ class CurrencyRatesParser:
     
     def __init__(self) -> None:
         self.records: List[Dict[str, Any]] = []
-        self.current_date: str = dt.now().strftime("%d.%m.%Y")
+        self.current_date: str = datetime.datetime.now().strftime("%d.%m.%Y")
     
     def parse(self, date: Optional[str] = None) -> 'CurrencyRatesParser':
         """
