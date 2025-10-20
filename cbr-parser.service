@@ -7,7 +7,7 @@ After=network.target
 Type=simple
 User=dakorlykhanov-2121817
 WorkingDirectory=/home/dakorlykhanov-2121817/cbr_parser_2
-ExecStart=/home/dakorlykhanov-2121817/cbr_parser_2/.myenv/bin/python /home/dakorlykhanov-2121817/cbr_parser_2/main.py
+ExecStart=/home/dakorlykhanov-2121817/cbr_parser_2/myenv/bin/python /home/dakorlykhanov-2121817/cbr_parser_2/main.py
 Restart=always
 
 [Install]
