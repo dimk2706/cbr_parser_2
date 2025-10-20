@@ -58,6 +58,31 @@ class CurrencyRatesParser:
         
         return self
     
+    def parse_date_range(self, start_date: str, end_date: str) -> 'CurrencyRatesParser':
+        """Парсит данные за указанный период"""
+        from datetime import datetime, timedelta
+
+        start_dt = datetime.strptime(start_date, "%d.%m.%Y")
+        end_dt = datetime.strptime(end_date, "%d.%m.%Y")
+
+        current_dt = start_dt
+        while current_dt <= end_dt:
+            date_str = current_dt.strftime("%d.%m.%Y")
+
+            # Пропускаем будущие даты
+            if current_dt > datetime.now():
+                print(f"⏩ Пропускаем будущую дату: {date_str}")
+                current_dt += timedelta(days=1)
+                continue
+
+            print(f"📅 Парсим {date_str}...")
+            self.parse(date_str)
+            time.sleep(1)  # Пауза между запросами
+            current_dt += timedelta(days=1)
+    
+        return self
+
+    
     def _parse_html(self, html: str) -> None:
         """Парсит HTML и извлекает данные о курсах валют."""
         soup = BeautifulSoup(html, 'html.parser')
