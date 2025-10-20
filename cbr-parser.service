@@ -1,0 +1,14 @@
+[Unit]
+Description=cbr-parser
+After=syslog.target
+After=network.target
+
+[Service]
+Type=simple
+User=dakorlykhanov-2121817
+WorkingDirectory=/home/dakorlykhanov-2121817/cbr_parser_2
+ExecStart=/home/dakorlykhanov-2121817/cbr_parser_2/.myenv/bin/python /home/dakorlykhanov-2121817/cbr_parser_2/main.py
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
