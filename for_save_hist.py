@@ -3,7 +3,7 @@ from parser import CurrencyRatesParser
 parser = CurrencyRatesParser()
 
 # Парсим данные за период
-parser.parse_date_range("01.01.2024", "18.10.2025")
+parser.parse_date_range("01.01.2020", "31.12.2023")
 
 # СОХРАНЯЕМ в базу данных
 if parser.records:
